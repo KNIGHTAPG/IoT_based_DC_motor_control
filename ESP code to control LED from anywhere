@@ -1,4 +1,4 @@
-#include "ThingSpeak.h"               //INCLUDING ThingSpeak lib. and ESP lib.
+#include "ThingSpeak.h"              //INCLUDING ThingSpeak lib. and ESP lib.
 #include <ESP8266WiFi.h>
 
 const char* ssid     = "SSID";//Replace with your Wifi Name
