@@ -1,0 +1,69 @@
+#ESP code !
+#include "ThingSpeak.h"                //INCLUDING ThingSpeak lib. and ESP lib.
+#include <ESP8266WiFi.h>
+
+const char* ssid     = "SSID";//Replace with your Wifi Name
+const char* password = "Password";// Replace with your wifi Password
+
+unsigned long channel =(*****Enter your channel id);
+unsigned int led1 = 1;
+
+WiFiClient  client;
+void setup() 
+{
+  Serial.begin(115200);  // Used for serial communication. 
+  delay(100);
+  
+  pinMode(D4, OUTPUT);    // LED pin D4 declared
+
+  digitalWrite(D4, 0);  // We start by connecting to a WiFi network
+  Serial.println();
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  
+  while (WiFi.status() != WL_CONNECTED) 
+  {
+    delay(500);
+    Serial.print(".");
+  }
+ 
+  Serial.println("");                            //USED FOR WIFI CONNECTION !
+  Serial.println("WiFi connected");  
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.print("Netmask: ");
+  Serial.println(WiFi.subnetMask());
+  Serial.print("Gateway: ");
+  Serial.println(WiFi.gatewayIP());
+  ThingSpeak.begin(client);
+
+}
+
+void loop() 
+
+{
+  int statusCode = 0;          //get the last data of the fields
+  int led_1 = ThingSpeak.readFloatField(channel, led1);
+  statusCode = ThingSpeak.getLastReadStatus();
+  if(statusCode == 200)
+   {
+    if(led_1 == 1)
+      {
+      digitalWrite(D4, HIGH);                                     //USED TO GET REQUEST FROM CLOUD AND ON/OFF LED.
+      Serial.println("LIGHT is On");
+      }
+    else if(led_1 == 0)
+      {
+      digitalWrite(D4, LOW);
+      Serial.println("LIGHT is Off");
+      }
+    Serial.print("The latest data from led_1 received is : ");
+    Serial.println(led_1);    
+  }
+   else 
+  {Serial.println("Problem reading channel. HTTP error code " + String(statusCode));
+  }
+  delay(10000);
+}
