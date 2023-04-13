@@ -1,4 +1,3 @@
-#ESP code !
 #include "ThingSpeak.h"                //INCLUDING ThingSpeak lib. and ESP lib.
 #include <ESP8266WiFi.h>
 
